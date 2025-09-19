@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import { toDocx } from 'mdast2docx';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm'
-import React from 'react';
 // import { toDocx } from '@m2d/core';
 // import { htmlPlugin } from '@m2d/html';
 // import { imagePlugin } from '@m2d/image';
