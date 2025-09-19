@@ -10,8 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "marked": "^16.3.0",
+    "mdast2docx": "^1.4.2",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
