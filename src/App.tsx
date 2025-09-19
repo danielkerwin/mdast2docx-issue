@@ -3,39 +3,35 @@ import './App.css';
 import { toDocx } from 'mdast2docx';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm'
 import React from 'react';
-import { marked } from "marked";
+// import { toDocx } from '@m2d/core';
+// import { htmlPlugin } from '@m2d/html';
+// import { imagePlugin } from '@m2d/image';
+// import { listPlugin } from '@m2d/list';
+// import { mathPlugin } from '@m2d/math';
+// import { tablePlugin } from '@m2d/table';
 
+const SAMPLE = `
+# Sample Document
+This is a **bold** text and _italic_ text.  
+
+> A blockquote example  
+
+- Reference 1[^1]
+- Reference 2[^2]
+
+[^1]: This is the first footnote content.\n
+[^2]: This is the second footnote content.
+`;
 
 function App() {
-  const [count, setCount] = useState(0);
 
-  const markdown = `
-    # Sample Document  
-    This is a **bold** text and _italic_ text.  
+  const [markdown, setMarkdown] = useState(SAMPLE)
 
-    > A blockquote example  
+  const mdast = unified().use(remarkParse).use(remarkGfm).parse(markdown);
 
-    - List Item 1[^1]  
-    - List Item 2[^2]  
-
-    [Click Here](https://example.com)  
-
-    This is a footnote reference.  
-
-    [^1]: This is the first footnote content.
-    [^2]: This is the second footnote content.
-  `;
-  const [parsed, setParsed] = useState('')
-
-  const parse = async () => {
-    const md = await marked(markdown)
-    setParsed(md);
-  }
-
-  const mdast = unified().use(remarkParse).parse(markdown);
-
-  const downloadDocX = async () => {
+  const convertMdToDocx = async () => {
     const docxBlob = await toDocx(mdast, { title: "My Document" }, {});
     const url = URL.createObjectURL(docxBlob as Blob);
     const link = document.createElement("a");
@@ -45,17 +41,15 @@ function App() {
     URL.revokeObjectURL(url);
   }
 
-  useEffect(() => {
-    parse();
-  })
-
   return (
     <>
-      <h1>mdast2docx footnote issue</h1>
-      <div className="card" dangerouslySetInnerHTML={{ __html: parsed }}>
-      </div>
+      <h4>mdast2docx footnote issue</h4>
+      <textarea value={markdown} style={{
+        width: '300px',
+        height: '300px'
+      }} onChange={(e) => setMarkdown(e.target.value)}></textarea>
       <div className="card">
-        <button onClick={downloadDocX}>
+        <button onClick={convertMdToDocx}>
           Convert MD to Docx
         </button>
       </div>
